@@ -2,15 +2,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const dbConfig = require('./config/db.js');
+const mongoose = require('mongoose');
 
 const app = express();
 const port = process.env.PORT || 8000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-const dbConfig = require('./config/db.js');
-const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
@@ -23,7 +22,6 @@ mongoose.connect(dbConfig.url, {
     console.log('Could not connect to the database. Exiting now...', err);
     process.exit();
 });
-
 
 require('./app/routes/note.routes.js')(app);
 app.listen(port, () => { console.log('We are live on ' + port); });
